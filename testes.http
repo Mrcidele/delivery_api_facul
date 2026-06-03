@@ -1,0 +1,47 @@
+### 1. Criar Pedido com Sucesso (Esperado: 201 Created)
+POST http://localhost:8000/api/pedidos
+Content-Type: application/json
+Accept: application/json
+
+{
+    "cliente": "Ana Lima",
+    "cep": "80010-000",
+    "total": 45.90,
+    "itens": ["Pizza"]
+}
+
+### 2. Confirmar Pedido - Evento M5 (Esperado: 202 Accepted)
+POST http://localhost:8000/api/eventos/pedido-confirmado
+Content-Type: application/json
+Accept: application/json
+
+{
+    "pedidoId": 1,
+    "cliente": "Ana Lima",
+    "cep": "80010-000",
+    "total": 45.90
+}
+
+### 3. Falha: Pedido sem itens (Esperado: 400 Bad Request)
+POST http://localhost:8000/api/pedidos
+Content-Type: application/json
+Accept: application/json
+
+{
+    "cliente": "Ana Lima",
+    "cep": "80010-000",
+    "total": 45.90,
+    "itens": []
+}
+
+### 4. Falha: CEP Inválido (Esperado: 400 Bad Request)
+POST http://localhost:8000/api/pedidos
+Content-Type: application/json
+Accept: application/json
+
+{
+    "cliente": "Ana Lima",
+    "cep": "00000-000",
+    "total": 45.90,
+    "itens": ["Pizza"]
+}
