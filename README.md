@@ -42,3 +42,13 @@ O projeto foi construído utilizando a **Arquitetura MVC**e não utiliza banco d
 2. Instale as dependências com o Composer:
    ```bash
    composer install
+
+Copie o arquivo de ambiente e gere a chave da aplicação:
+Bash
+cp .env.example .env
+php artisan key:generate
+
+Inicie o servidor local:
+Bash
+php artisan serve
+A API estará disponível em http://localhost:8000/api.
