@@ -15,6 +15,11 @@ class PedidoService
             throw new Exception('Pedido sem itens', 400);
         }
 
+        // Verifica se o utilizador enviou o CEP no JSON
+        if (empty($dados['cep'])) {
+            throw new Exception('O campo CEP é obrigatório', 400);
+        }
+
         // Usar no POST /pedidos para buscar endereço pelo CEP
         $response = Http::get("https://viacep.com.br/ws/{$dados['cep']}/json/");
         $viaCepData = $response->json();
