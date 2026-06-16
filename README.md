@@ -1,58 +1,44 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# 🍔 API Delivery de Comida
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Projeto desenvolvido para a disciplina de Integração de Sistemas de Software (Trabalho Final). O objetivo é fornecer uma API RESTful para o gerenciamento de produtos e pedidos de um sistema de delivery de comida. 
 
-## About Laravel
+[cite_start]O projeto foi construído utilizando a **Arquitetura MVC** [cite: 9] [cite_start]e não utiliza banco de dados relacional (sem SQL)[cite: 47], armazenando os dados temporariamente em memória/cache local.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## 🚀 Tecnologias Utilizadas
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+* **Linguagem & Framework:** PHP 8.3+ com Laravel
+* [cite_start]**Arquitetura:** MVC (Model-View-Controller) [cite: 9]
+* [cite_start]**Integração Externa:** API ViaCEP (Busca de endereços) [cite: 25]
+* [cite_start]**Persistência:** Cache local do Laravel (Sem SQL) [cite: 47]
+* [cite_start]**Testes:** PHPUnit (equivalente ao Jest solicitado) [cite: 34]
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## ⚙️ Regras de Negócio Implementadas
 
-## Learning Laravel
+1.  **Validação de Itens:** Um pedido não pode ser criado sem itens. [cite_start]Caso ocorra, a API retorna `400 Bad Request` antes mesmo de consultar serviços externos[cite: 24, 45].
+2.  **Cálculo de Frete (ViaCEP):**
+    * [cite_start]O CEP é consultado na API do ViaCEP (`GET https://viacep.com.br/ws/:cep/json/`)[cite: 29].
+    * [cite_start]Se o CEP for inválido ou não encontrado, retorna `400 Bad Request`[cite: 24, 28, 46].
+    * [cite_start]**Taxa de Entrega:** Pedidos para a mesma cidade (Curitiba) custam **R$ 5,00**[cite: 23]. [cite_start]Pedidos para outros municípios custam **R$ 15,00**[cite: 24].
+    * [cite_start]O endereço completo (Logradouro, Bairro e Cidade) é salvo automaticamente no pedido[cite: 27].
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+## 📌 Endpoints da API
 
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+### Produtos
+* [cite_start]`GET /produtos`: Lista todos os produtos cadastrados[cite: 10].
+* [cite_start]`POST /produtos`: Cadastra um novo produto (nome, preco, categoria, disponivel)[cite: 5, 11].
 
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
+### Pedidos
+* [cite_start]`GET /pedidos`: Lista todos os pedidos[cite: 11].
+* [cite_start]`GET /pedidos/:id`: Retorna os detalhes de um pedido específico[cite: 14].
+* [cite_start]`POST /pedidos`: Cria um novo pedido, calculando a taxa via CEP[cite: 12].
+* [cite_start]`PUT /pedidos/:id/status`: Atualiza o status de um pedido[cite: 13].
 
-## Agentic Development
+### Eventos (M5)
+* [cite_start]`POST /eventos/pedido-confirmado`: Simula a confirmação de um pedido[cite: 30, 31]. [cite_start]Retorna `202 Accepted` com a mensagem `"Pedido #{id} em processamento"`[cite: 33, 44].
 
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
+## 🛠️ Como Executar o Projeto
 
-```bash
-composer require laravel/boost --dev
-
-php artisan boost:install
-```
-
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
-
-## Contributing
-
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
-
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+1. Clone o repositório.
+2. Instale as dependências com o Composer:
+   ```bash
+   composer install
