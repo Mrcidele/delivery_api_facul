@@ -1,5 +1,7 @@
+@baseUrl = http://localhost/api
+
 ### 1. Criar Pedido com Sucesso (Esperado: 201 Created)
-POST http://localhost:8000/api/pedidos
+POST {{baseUrl}}/pedidos
 Content-Type: application/json
 Accept: application/json
 
@@ -11,7 +13,7 @@ Accept: application/json
 }
 
 ### 2. Confirmar Pedido - Evento M5 (Esperado: 202 Accepted)
-POST http://localhost:8000/api/eventos/pedido-confirmado
+POST {{baseUrl}}/eventos/pedido-confirmado
 Content-Type: application/json
 Accept: application/json
 
@@ -23,7 +25,7 @@ Accept: application/json
 }
 
 ### 3. Falha: Pedido sem itens (Esperado: 400 Bad Request)
-POST http://localhost:8000/api/pedidos
+POST {{baseUrl}}/pedidos
 Content-Type: application/json
 Accept: application/json
 
@@ -35,7 +37,7 @@ Accept: application/json
 }
 
 ### 4. Falha: CEP Inválido (Esperado: 400 Bad Request)
-POST http://localhost:8000/api/pedidos
+POST {{baseUrl}}/pedidos
 Content-Type: application/json
 Accept: application/json
 

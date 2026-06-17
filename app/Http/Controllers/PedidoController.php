@@ -17,8 +17,9 @@ class PedidoController extends Controller
             $pedido = $this->pedidoService->criarPedido($request->all());
             return response()->json($pedido, 201);
         } catch (Exception $e) {
-            // Se o código for 0 ou inválido, força o status 500
-            $statusCode = $e->getCode() > 0 ? $e->getCode() : 500;
+            $code = $e->getCode();
+            $statusCode = (is_numeric($code) && $code >= 400 && $code < 600) ? (int)$code : 500;
+            
             return response()->json(['erro' => $e->getMessage()], $statusCode);
         }
     }
